@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tu publies ou tu supprimes ?</title>
+<style>
+:root{color-scheme:dark;--bg:#071327;--card:#0f2447;--card2:#16305d;--pink:#ff4d8d;--pink2:#ff8fb8;--tx:#f3f6ff;--mu:#9fb0d3;--ok:#35d49a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:radial-gradient(circle at 20% 0,#14336b 0,var(--bg) 55%);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh}
+.wrap{max-width:480px;margin:0 auto;padding:14px}
+.logo{font-weight:800;font-size:22px;background:linear-gradient(90deg,var(--pink),var(--pink2));-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:-.5px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.bar{height:5px;background:var(--card2);border-radius:9px;overflow:hidden;margin-bottom:12px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--pink2));transition:width .4s}
+.card{background:var(--card);border:1px solid #234172;border-radius:18px;overflow:hidden;box-shadow:0 10px 30px #0006}
+.hd{display:flex;align-items:center;gap:10px;padding:12px}
+.av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--pink),#7a5cff);display:grid;place-items:center;font-size:19px;border:2px solid #fff3}
+.hd b{font-size:14px}.hd small{display:block;color:var(--mu);font-size:11px}
+.img{height:230px;display:grid;place-items:center;font-size:92px;position:relative}
+.img span{filter:drop-shadow(0 8px 14px #0008)}
+.img em{position:absolute;right:10px;bottom:8px;font-style:normal;font-size:12px;background:#0007;padding:3px 9px;border-radius:99px}
+.act{display:flex;gap:14px;padding:10px 14px 0;font-size:22px}
+.cap{padding:8px 14px;font-size:14px;line-height:1.45}
+.cm{padding:0 14px 12px;font-size:13px;color:#cfd9f2}.cm p{margin:5px 0;background:var(--card2);padding:8px 11px;border-radius:12px}.cm b{color:var(--pink2)}
+.q{padding:14px;background:#0a1a38;border-top:1px solid #234172}
+.q h3{margin:0 0 10px;font-size:15px}
+.opt{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:var(--card2);color:var(--tx);border:1.5px solid #2c4d8c;border-radius:14px;padding:12px;margin-bottom:8px;font-size:14px;cursor:pointer;font-family:inherit}
+.opt:hover,.opt.sel{border-color:var(--pink);background:#2a2f66}
+.opt.sel{box-shadow:0 0 0 2px #ff4d8d55}.opt b{font-size:20px}
+.btn{background:linear-gradient(90deg,var(--pink),#d93a8b);color:#fff;border:0;border-radius:14px;padding:13px 18px;font-weight:700;font-size:15px;width:100%;cursor:pointer;font-family:inherit}
+.btn:disabled{opacity:.4}.ghost{background:transparent;border:1px solid #2c4d8c;color:var(--mu);width:auto;padding:6px 12px;font-size:12px;font-weight:500}
+input{width:100%;padding:13px;border-radius:12px;border:1.5px solid #2c4d8c;background:#0a1a38;color:var(--tx);font-size:16px;margin:12px 0;font-family:inherit}
+.hero{text-align:center;padding:26px 18px}.hero .big{font-size:64px}.hero h1{margin:6px 0;font-size:27px;line-height:1.15}.hero p{color:var(--mu);font-size:14px;line-height:1.5}
+.pill{display:inline-block;background:#ff4d8d22;color:var(--pink2);padding:4px 11px;border-radius:99px;font-size:12px;margin:3px}
+.st{background:var(--card);border:1px solid #234172;border-radius:16px;padding:14px;margin-bottom:12px}.st h4{margin:0 0 9px;font-size:14px}
+.r{margin:7px 0;font-size:12.5px}.r div{display:flex;justify-content:space-between;gap:8px}.r .t{height:9px;background:var(--card2);border-radius:9px;margin-top:3px;overflow:hidden}.r .t i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--pink2))}
+.tw{overflow-x:auto}table{border-collapse:collapse;font-size:12px;width:100%}td,th{padding:6px 7px;border-bottom:1px solid #234172;text-align:center;white-space:nowrap}th{color:var(--mu)}td:first-child,th:first-child{text-align:left;position:sticky;left:0;background:var(--card)}
+.tabs{display:flex;gap:6px;margin-bottom:12px}.tabs button{flex:1}.tabs .on{background:var(--pink);color:#fff;border-color:var(--pink)}
+#qr{background:#fff;padding:12px;border-radius:14px;display:inline-block}.note{color:var(--mu);font-size:12px;line-height:1.5}
+.warn{background:#ff4d8d22;border:1px solid var(--pink);padding:9px 12px;border-radius:12px;font-size:12px;margin-bottom:10px}
+</style></head><body><div class="wrap">
+<div class="top"><div class="logo">📱 PublieOuSupprime</div><div id="who"></div></div>
+<div id="app"></div></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const P=[
+{u:"humour_accent",e:"🎤",g:["#ff4d8d","#7a5cff"],t:"Vidéo • 3,2 M de vues",cap:"Un créateur imite volontairement un accent étranger pour faire rire ses abonnés. Sa vidéo obtient des millions de vues.",com:["Mort de rire, trop fort 😂","C’est se moquer de personnes qui subissent déjà des discriminations à cause de leur accent."],o:[["😂","Liker parce que c’est de l’humour"],["💬","Expliquer pourquoi cette imitation peut être blessante"],["🚩","Signaler la vidéo"],["➡️","Scroller"]]},
+{u:"trend_traditions",e:"🇲🇦",g:["#c1272d","#0f2447"],t:"Trend • Traditions marocaines",cap:"Plusieurs personnes montrent des traditions marocaines. Un créateur ajoute des clichés humiliants sur les Marocains et leur façon de parler.",com:["Ahah c’est trop vrai 😂😂","Ce ne sont pas des traditions, ce sont des clichés."],o:[["😂","Liker parce que tu trouves ça drôle"],["🎉","Participer à la trend avec des exemples positifs"],["💬","Commenter pour dénoncer les clichés"],["🚩","Signaler la vidéo"],["➡️","Ignorer"]]},
+{u:"meme_factory",e:"📸",g:["#2b5fd9","#ff4d8d"],t:"Meme viral • 1,4 M de partages",cap:"Une capture d’écran d’une personne devient virale. Des milliers d’utilisateurs détournent son visage pour se moquer d’elle. Elle publie une vidéo pour demander qu’on arrête.",com:["Si tu ne voulais pas être connu, il ne fallait pas publier ta photo.","Elle n’a rien demandé, c’est du harcèlement."],o:[["😂","Utiliser le meme à ton tour"],["💬","Défendre la personne"],["🚩","Signaler les détournements"],["📩","Envoyer un message de soutien à la victime"],["➡️","Continuer à scroller"]]},
+{u:"glow_filter",e:"✨",g:["#ffb3d1","#7a5cff"],t:"Filtre viral • Glow Up",cap:"Un filtre modifie les visages : peau plus claire, nez affiné, yeux modifiés. Des utilisateurs disent qu’il « améliore » les visages.",com:["Il me rend tellement plus belle 😍","Il efface ce qui fait notre diversité…"],o:[["❤️","Utiliser le filtre et participer à la trend"],["💬","Dénoncer les standards de beauté imposés"],["📤","Partager une vidéo expliquant le problème"],["➡️","Ignorer la tendance"]]},
+{u:"temoignage_stage",e:"🎓",g:["#0f2447","#35d49a"],t:"Témoignage • Réaction virale",cap:"Une étudiante raconte avoir été refusée pour un stage après des remarques sur son apparence et son origine. Une vidéo réaction répond : « Aujourd’hui, tout est une discrimination. » Elle fait bien plus de vues.",com:["Peut-être qu’elle n’avait simplement pas les compétences.","Je l’ai vécu aussi. Merci de témoigner."],o:[["❤️","Liker la vidéo réaction"],["💬","Défendre le témoignage initial"],["📤","Partager les deux versions pour demander des explications"],["➡️","Ne pas prendre position"]]},
+{u:"top_ecoles",e:"🏫",g:["#7a5cff","#2b5fd9"],t:"Classement • Spécial lycées",cap:"Un influenceur classe les élèves selon leur établissement : privé, public, quartiers populaires. Il présente les élèves du privé comme plus intelligents et mieux éduqués.",com:["Logique, le privé c’est un autre niveau.","Ça rabaisse des élèves qui font de gros efforts."],o:[["❤️","Liker parce que le classement est intéressant"],["💬","Défendre les élèves des établissements publics"],["📤","Partager pour dénoncer les préjugés"],["➡️","Ne pas prendre position"]]},
+{u:"ootd_lina",e:"👗",g:["#ff8fb8","#0f2447"],t:"Tenue du jour",cap:"Une jeune fille publie sa tenue du jour. Des utilisateurs critiquent ses vêtements parce qu’elle porte un voile et disent qu’elle ne devrait pas participer à certaines tendances de mode.",com:["Ce n’est pas fait pour toi cette trend.","Magnifique style, continue !"],o:[["❤️","Liker les commentaires"],["💬","Défendre son droit à exprimer son style"],["📩","Lui envoyer un message de soutien"],["🚩","Signaler les commentaires"]]},
+{u:"fails_au_volant",e:"🚗",g:["#2b5fd9","#071327"],t:"Compilation • 5 M de vues",cap:"Compilation de femmes qui font des erreurs au volant. Légende : « Voilà pourquoi les femmes ne devraient pas conduire. »",com:["Toujours la même chose 😂","Quelques vidéos ne prouvent rien : les hommes aussi font des erreurs."],o:[["😂","Liker parce que c’est drôle"],["💬","Rappeler que la conduite ne dépend pas du genre"],["📤","Partager pour dénoncer le sexisme"],["🚩","Signaler la publication"]]},
+{u:"nouvelle_vie_55",e:"👩‍💼",g:["#ff4d8d","#35d49a"],t:"Reel • Ma nouvelle activité",cap:"Une femme de 55 ans présente sa nouvelle activité professionnelle. Commentaires : « À ton âge, tu devrais penser à la retraite. »",com:["Tu es trop vieille pour commencer maintenant.","Bravo, il n’y a pas d’âge pour se lancer !"],o:[["❤️","Liker les commentaires"],["💬","Encourager la personne et dénoncer les préjugés"],["📤","Partager sa vidéo"],["➡️","Ignorer"]]},
+{u:"success_story",e:"🌍",g:["#ff8f3d","#ff4d8d"],t:"Reel • Mon succès, mes projets",cap:"Une influenceuse africaine publie une vidéo dans laquelle elle célèbre son succès et partage ses nouveaux projets.",com:["Elle se croit supérieure aux autres depuis qu’elle a de l’argent.","Elle ferait mieux de rester à sa place, elle en fait trop."],o:[["❤️","Liker les commentaires"],["💬","Répondre pour défendre l’influenceuse"],["📩","Lui envoyer un message de soutien"],["🚩","Signaler les commentaires"],["➡️","Ne rien faire"]]},
+{u:"devine_qui",e:"🕵️",g:["#071327","#7a5cff"],t:"Sondage • Devine qui…",cap:"Une vidéo présente plusieurs personnes et demande de deviner laquelle serait la plus susceptible de commettre un délit. Les commentaires désignent selon l’apparence, la tenue ou le quartier.",com:["Évidemment c’est lui, regarde sa tête.","On ne juge pas quelqu’un sur son apparence."],o:[["📊","Participer au sondage"],["💬","Dénoncer les associations entre apparence et criminalité"],["🚩","Signaler la vidéo"],["➡️","Ignorer"]]},
+{u:"bro_2015",e:"📟",g:["#2b5fd9","#35d49a"],t:"Meme • Bro is still living in 2015",cap:"Un meme se moque d’un adolescent qui utilise un ancien téléphone et ne peut pas suivre les tendances. « Bro is still living in 2015 ». Les commentaires se moquent de sa situation financière.",com:["Il n’a même pas de quoi se payer un vrai téléphone 💀","Ce n’est pas une honte de ne pas avoir les moyens."],o:[["😂","Liker le meme"],["💬","Rappeler que tout le monde n’a pas les mêmes moyens"],["🤝","Défendre la personne si elle est identifiable"],["🚩","Signaler les moqueries"],["➡️","Scroller"]]},
+{u:"classe_memes",e:"🧩",g:["#ff8fb8","#2b5fd9"],t:"Meme • Un élève « différent »",cap:"Un meme reprend la vidéo d’un élève qui a des comportements différents de ses camarades. La légende se moque de sa façon de communiquer et les commentaires le qualifient de « bizarre ».",com:["Trop bizarre ce mec 😭","Être différent ne justifie pas les moqueries."],o:[["😂","Liker le meme"],["💬","Expliquer que les différences ne justifient pas les moqueries"],["🚩","Signaler la publication"],["📩","Soutenir la personne concernée"],["➡️","Ne pas intervenir"]]}
+];
+const N=P.length,app=document.getElementById("app"),$=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const ADMIN_CODE="prof2026";let db=null,uid=null,owner=false,name="",ans=[],i=0,unsub=null,ready=false;
+const FIREBASE_CONFIG={apiKey:"AIzaSyDuhLpPuRpOnp-JTFVsTwpMKa9kMspssUM",authDomain:"tu-publies-ou-tu-supprimes.firebaseapp.com",projectId:"tu-publies-ou-tu-supprimes",storageBucket:"tu-publies-ou-tu-supprimes.firebasestorage.app",messagingSenderId:"700726151543",appId:"1:700726151543:web:0fa551aa8c412aacfa7972"};
+(()=>{try{if(!FIREBASE_CONFIG.apiKey.startsWith("COLLE")){firebase.initializeApp(FIREBASE_CONFIG);db=firebase.firestore()}}catch(e){}
+try{uid=localStorage.getItem("uid")}catch(e){}
+if(!uid){uid="u_"+Math.random().toString(36).slice(2,12);try{localStorage.setItem("uid",uid)}catch(e){}}
+home();})();
+function home(){unsub&&unsub();$("#who").innerHTML='<button class="btn ghost" id="adm">🔐 Admin</button>';$("#adm").onclick=gate;
+app.innerHTML=`<div class="card hero"><div class="big">📱🤔</div><h1>Tu publies<br>ou tu supprimes ?</h1>
+<p>Les réseaux sociaux accentuent-ils les discriminations ou aident-ils à les combattre ? Cohésion et diversité dans une société démocratique.</p>
+<div><span class="pill">${N} publications</span><span class="pill">2 minutes</span><span class="pill">Anonyme</span></div>
+${db?"":'<div class="warn" style="margin-top:12px">Mode démo : tes réponses ne seront pas enregistrées.</div>'}
+<input id="nm" maxlength="24" placeholder="Ton pseudo ou ton prénom"><button class="btn" id="go">Commencer la simulation</button></div>`;
+$("#go").onclick=()=>{name=$("#nm").value.trim();if(!name){$("#nm").focus();return}ans=[];i=0;post()}}
+function gate(){app.innerHTML=`<div class="card hero"><div class="big">🔐</div><h1>Espace admin</h1><p>Entre le code administrateur.</p><input id="pin" type="text" autocomplete="off" placeholder="Code"><div id="err" class="note" style="color:var(--pink2);min-height:18px"></div><button class="btn" id="ok">Entrer</button><button class="btn ghost" id="bk2" style="margin-top:10px">← Retour</button></div>`;const t=()=>{$("#pin").value===ADMIN_CODE?admin():$("#err").textContent="Code incorrect"};$("#ok").onclick=t;$("#pin").addEventListener("keydown",e=>{if(e.key=="Enter")t()});$("#bk2").onclick=home}
+function post(){const p=P[i],sel=ans[i];$("#who").innerHTML=`<span class="note">@${esc(name)}</span>`;
+app.innerHTML=`<div class="bar"><i style="width:${i/N*100}%"></i></div><div class="card">
+<div class="hd"><div class="av">${p.e}</div><div><b>@${p.u}</b><small>${p.t}</small></div></div>
+<div class="img" style="background:linear-gradient(135deg,${p.g[0]},${p.g[1]})"><span>${p.e}</span><em>${i+1} / ${N}</em></div>
+<div class="act"><span>🤍</span><span>💬</span><span>📤</span></div>
+<div class="cap"><b>@${p.u}</b> ${p.cap}</div>
+<div class="cm">${p.com.map((c,k)=>`<p><b>@user${k+7}${i}</b> ${c}</p>`).join("")}</div>
+<div class="q"><h3>Tu fais quoi ?</h3>${p.o.map((o,k)=>`<button class="opt" data-k="${k}"><b>${o[0]}</b>${o[1]}</button>`).join("")}</div></div>`;
+document.querySelectorAll(".opt").forEach(b=>b.onclick=async()=>{document.querySelectorAll(".opt").forEach(x=>x.disabled=true);b.classList.add("sel");ans[i]=+b.dataset.k;
+try{db&&await db.doc("votes/"+uid).set({name,a:ans.slice(),t:Date.now()})}catch(e){}
+setTimeout(()=>{i++;i<N?post():end()},450)})}
+function end(){$("#who").innerHTML="";app.innerHTML=`<div class="bar"><i style="width:100%"></i></div><div class="card hero"><div class="big">🎉</div><h1>Merci ${esc(name)} !</h1>
+<p>Tes ${N} réponses sont enregistrées. Ton professeur va en discuter avec la classe : chaque réaction (like, partage, signalement, silence) a un effet sur ce que les réseaux amplifient.</p></div>
+<div class="st" style="margin-top:12px"><h4>Tes choix</h4>${P.map((p,k)=>`<div class="r">${p.e} @${p.u} → ${p.o[ans[k]][0]} ${p.o[ans[k]][1]}</div>`).join("")}</div>
+<button class="btn" id="re">Rejouer</button>`;$("#re").onclick=home}
+function admin(){app.innerHTML=`<div class="tabs"><button class="btn ghost on" data-t="s">📊 Statistiques</button><button class="btn ghost" data-t="p">👥 Participants</button><button class="btn ghost" data-t="q">🔳 QR code</button><button class="btn ghost" id="rs">🗑️ Reset</button><button class="btn ghost" id="bk">←</button></div><div id="ad"></div>`;
+$("#bk").onclick=home;let tab="s",rows=[],all=[],ep=0;$("#rs").onclick=async()=>{const b=$("#rs");if(b.dataset.c!="1"){b.dataset.c="1";b.textContent="⚠️ Confirmer ?";setTimeout(()=>{b.dataset.c="";b.textContent="🗑️ Reset"},4000);return}b.dataset.c="";b.textContent="🗑️ Reset";if(!db)return;try{await db.doc("meta/reset").set({t:Date.now()})}catch(e){alert("Réinitialisation impossible");return}for(const x of all){try{await db.doc("votes/"+x._id).delete()}catch(e){}}};const draw=()=>{document.querySelectorAll(".tabs [data-t]").forEach(b=>b.classList.toggle("on",b.dataset.t==tab));const d=$("#ad");
+if(tab=="q"){d.innerHTML=`<div class="st" style="text-align:center"><h4>QR code pour la classe</h4><div id="qr"></div><input id="url" value="${esc(location.href.split("#")[0])}"><p class="note">Vérifie que l’adresse ci-dessus est bien le lien de cette page, puis projette le QR code. Fais un clic droit (ou capture d’écran) pour l’enregistrer.</p></div>`;
+const mk=()=>{$("#qr").innerHTML="";new QRCode($("#qr"),{text:$("#url").value,width:220,height:220,correctLevel:QRCode.CorrectLevel.M})};
+if(window.QRCode)mk();else{const s=document.createElement("script");s.src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";s.onload=mk;document.head.appendChild(s)}$("#url").oninput=mk;return}
+if(tab=="s"){d.innerHTML=`<div class="st"><h4>👥 ${rows.length} participant(s)</h4></div>`+P.map((p,k)=>{const c=p.o.map(()=>0);rows.forEach(r=>{const v=r.a?.[k];v!=null&&c[v]++});const t=c.reduce((a,b)=>a+b,0);
+return`<div class="st"><h4>${k+1}. ${p.e} @${p.u} <span class="note">(${t} rép.)</span></h4>${p.o.map((o,j)=>{const pc=t?Math.round(c[j]/t*100):0;return`<div class="r"><div><span>${o[0]} ${o[1]}</span><b>${pc}% · ${c[j]}</b></div><div class="t"><i style="width:${pc}%"></i></div></div>`}).join("")}</div>`}).join("")+'<button class="btn" id="rs2">🗑️ Réinitialiser les stats</button>';$("#rs2").onclick=()=>{const r=$("#rs"),t=$("#rs2"),L="🗑️ Réinitialiser les stats";r.click();t.textContent=r.dataset.c=="1"?"⚠️ Clique encore pour confirmer":L;setTimeout(()=>{const x=$("#rs2");x&&(x.textContent=L)},4200)};return}
+d.innerHTML=`<div class="st tw"><table><tr><th>Pseudo</th>${P.map((p,k)=>`<th title="${p.u}">${k+1}</th>`).join("")}</tr>${rows.map(r=>`<tr><td>${esc(r.name||"?")}</td>${P.map((p,k)=>{const v=r.a?.[k];return`<td title="${v!=null?esc(p.o[v][1]):""}">${v!=null?p.o[v][0]:"·"}</td>`}).join("")}</tr>`).join("")}</table><p class="note">Survole (ou touche) un emoji pour voir la réponse exacte.</p></div>`};
+document.querySelectorAll(".tabs [data-t]").forEach(b=>b.onclick=()=>{tab=b.dataset.t;draw()});
+if(db){const f=()=>{rows=all.filter(r=>(r.t||0)>=ep)};const u2=db.doc("meta/reset").onSnapshot(s=>{ep=s.exists?(s.data().t||0):0;f();draw()});const u1=db.collection("votes").onSnapshot(s=>{all=s.docs.map(x=>({...x.data(),_id:x.id}));f();draw()},e=>{$("#ad").innerHTML='<div class="warn">Lecture impossible : '+esc(e.message)+'</div>'});unsub=()=>{u1();u2()}}else draw()}
+</script></body></html>
